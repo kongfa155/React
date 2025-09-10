@@ -8,21 +8,15 @@ class MyComponent extends React.Component {
         address: "Can Tho",
         age: 26
     }
-    handleClick(event){
-        console.log("My name is ", this.state.name, " And I am ", this.state.age);
-
+    handleOnChangeInput = (event)=> {
         this.setState({
-            name: "Cong Pha",
-            // address: "Can Tho",
-            // age: 26
+            name: event.target.value,
         })
-
-        this.setState({
-            age: Math.floor((Math.random() * 100) + 1)
-        })
+        
     }
-    handleOnMoveOver(event){
-        console.log(event.pageX);
+    handleOnSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state)
     }
     //JSX
     render(){
@@ -30,8 +24,13 @@ class MyComponent extends React.Component {
             <div> 
 
                 My name is {this.state.name} and I'm  {this.state.age}
-                <button onClick={(event) => {this.handleClick(event)}}>Click me</button>
-                <button onMouseOver={this.handleOnMoveOver}>Hover Me</button>
+                
+                <form onSubmit={(event) => this.handleOnSubmit(event)}>
+                    <input type="text" 
+                    onChange={(event) =>{ this.handleOnChangeInput(event)}}
+                    />
+                    <button>Submit</button>
+                </form>
             </div>
         );
     }
