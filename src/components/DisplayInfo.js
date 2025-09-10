@@ -16,13 +16,13 @@ class DisplayInfo extends React.Component{
         return(
             
             <div>
-                <did>
+                <div>
                     <span onClick={(event)=> {
                         this.handleShowHide(event)
                     }}>
                         {this.state.isShow === true ? "Hide list user:" : "Show list user:"} 
                     </span>
-                </did>
+                </div>
                     {this.state.isShow &&
                 <div>
                 {listUsers.map((user)=>{
