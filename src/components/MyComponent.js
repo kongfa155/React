@@ -1,37 +1,33 @@
 //Class component
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import AddUserInfo from "./AddUserInfo";
 import DisplayInfo from "./DisplayInfo";
-class MyComponent extends React.Component {
-    state = {
-        listUsers: [
+
+//Function component 
+const MyComponent = (props)=> {
+    const [listUsers, setListUsers] = useState([
             {id: 1, name:"Cong Pha", age:20},
             {id: 2, name:"Tra Nhu", age:19},
-            {id: 3, name:"TMDEY", age:1}
-        ]
+            {id: 3, name:"TMDEY", age:1},
+        ])
+
+    const handleAddNewUser = (obj) => {
+        setListUsers([obj,...listUsers])
+    }
+    const handleDeleteUser = (userID) => {
+        let listUsersClone = listUsers;
+        listUsersClone = listUsersClone.filter(item => item.id !== userID)
+        setListUsers(listUsersClone)
     }
 
-    handleAddNewUser = (obj) => {
-        this.setState({
-            listUsers: [obj, ...this.state.listUsers]
-        })
-    }
-    handleDeleteUser = (userID) => {
-        let listUsersClone = [...this.state.listUsers];
-        listUsersClone = listUsersClone.filter(item => item.id !== userID)
-        this.setState({
-            listUsers: listUsersClone,
-        })
-    }
     //JSX
-    render(){
         return (
             <>
             <div className = "A"> 
-                <AddUserInfo handleAddNewUser={this.handleAddNewUser}></AddUserInfo>
+                <AddUserInfo handleAddNewUser={handleAddNewUser}></AddUserInfo>
                 <br/>
-                <DisplayInfo listUsers={this.state.listUsers} handleDeleteUser = {this.handleDeleteUser}/>
+                <DisplayInfo listUsers={listUsers} handleDeleteUser = {handleDeleteUser}/>
             </div>
             <div className="B">
                 HEllo World
@@ -39,9 +35,5 @@ class MyComponent extends React.Component {
             </>
             
         );
-    }
-} 
-
-//Function component 
-
+}
 export default MyComponent;
