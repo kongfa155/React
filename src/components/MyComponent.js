@@ -1,6 +1,6 @@
 //Class component
 
-import React from "react";
+import React, { Fragment } from "react";
 import AddUserInfo from "./AddUserInfo";
 import DisplayInfo from "./DisplayInfo";
 class MyComponent extends React.Component {
@@ -20,11 +20,16 @@ class MyComponent extends React.Component {
     //JSX
     render(){
         return (
-            <div> 
+            <>
+            <div className = "A"> 
                 <AddUserInfo handleAddNewUser={this.handleAddNewUser}></AddUserInfo>
                 <br/>
                 <DisplayInfo listUsers={this.state.listUsers}/>
             </div>
+            <div className="B">
+                HEllo World
+            </div>
+            </>
             
         );
     }
