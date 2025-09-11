@@ -2,42 +2,40 @@ import React, { useState } from "react";
 
 
 const AddUserInfo = (props) => {
-    const [state, setState] = useState({
-        name: "",
-        address: "Can Tho",
-        age: '',
-    })
+    const [name, setName] = useState("Lif");
+    const [age, setAge] = useState("19");
+    const [address, setAddress] = useState("");
     const handleOnChangeInput = (event)=> {
-        setState({name: event.target.value})
+        setName(event.target.value)
         
     }
     const handleOnChangeAge = (event)=> {
-        setState({age: event.target.value})
+        setAge(event.target.value)
         
     }
     const handleOnSubmit = (event) => {
         event.preventDefault();
         props.handleAddNewUser({
             id: Math.floor((Math.random() * 100) + 1) + '-random',
-            name: state.name,
-            age: state.age
+            name: name,
+            age: age
         });
     }
     
         return (
              <div>
-                My name is {state.name} and I'm  {state.age}
+                My name is {name} and I'm  {age}
                 
                 <form onSubmit={(event) => handleOnSubmit(event)}>
                     <input type="text" 
-                    value = {state.name}
+                    value = {name}
                     onChange={(event) =>{ handleOnChangeInput(event)}}
                     />
                     <button>Submit</button>
                 </form>
                 <form onSubmit={(event) => handleOnSubmit(event)}>
                     <input type="text" 
-                    value = {state.age}
+                    value = {age}
                     onChange={(event) =>{ handleOnChangeAge(event)}}
                     />
                     <button>Submit</button>
