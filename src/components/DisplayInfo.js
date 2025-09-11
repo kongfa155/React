@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DisplayInfo.scss";
 import logo from "../logo.svg";
 
 const DisplayInfo = (props) => {
         const {listUsers} = props;         
         const [isShowHideListUser, setShowHideListUser]  = useState(true);
-        console.log(listUsers);
+
         const handleShowHideListUser = ()=> {
             setShowHideListUser(!isShowHideListUser);
         }
+
+        useEffect(()=> {
+            if(listUsers.length === 0){
+                alert("Your user now is 0");
+            }
+            console.log("Call me useEffect");
+        }, [listUsers]);
         return(
             
             <div className = 'display-infor-container'>
