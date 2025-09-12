@@ -6,7 +6,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 const Header = ()=> {
   return (
     <>
-      <Navbar bg="light" data-bs-theme="light">
+      <Navbar  className='custom-navbar' data-bs-theme="light" >
         <Container>  
         {/* <Navbar.Brand href="#home">Hoi Dan It</Navbar.Brand> */}
         <NavLink to='/' className='navbar-brand'>Hoi dan IT</NavLink>
@@ -21,6 +21,8 @@ const Header = ()=> {
             <Nav.Link href="/admins">Admin</Nav.Link> */}
           </Nav>
           <Nav>
+            <button className='btn-login'>Log in</button>
+            <button className='btn-signup'>Sign up</button>
             <NavDropdown title="Setting" id="basic-nav-dropdown">
               <NavDropdown.Item >Log in</NavDropdown.Item>
               <NavDropdown.Item >Log out</NavDropdown.Item>

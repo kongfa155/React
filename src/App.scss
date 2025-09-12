@@ -16,14 +16,87 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (min-width: 1850px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1800px !important;
+    }
+}
+
 .app-container {
     .header-container{
-        .navbar-nav {
+        .btn-login {
+                border-radius: 5px;
+                margin: 10px;
+                padding: 5px 20px;
+                border: 2px solid #535353;
+                height: 40px;
+            }
+        .btn-signup {
+            border-radius: 5px;
+            margin: 10px;
+            padding: 5px 20px;
+            background-color: #303030;
+            color: white;
+            height: 40px;
+            &:hover {
+                    background: black;
+                }
+        }
+        .navbar {
+            z-index: 10;
+            background-color: rgba(0,0,0,0) !important;
             .nav-link {
                  &.active{
-                    color: red;
+                    color: blue;
                 } 
             }
         }
     }
+    .homepage-container {
+        .homepage-content {
+            width: 50%;
+            padding: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            .title-1{
+                font-size: 50px;
+                font-weight: 600;
+            }
+            .title-2 {
+                font-size: 22px;
+            }
+            .title-3{
+                .btn{
+                    border-radius: 5px;
+                    margin: 10px;
+                    padding: 5px 20px;
+                    background-color: #303030;
+                    color: white;
+                    height: 40px;
+                    &:hover {
+                            background: black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.video {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}
+
+.custom-navbar {
+    background-color: rgba(0, 0, 0, 0) !important;
+    z-index: 10;
 }
