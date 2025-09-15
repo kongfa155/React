@@ -1,4 +1,6 @@
 import Example from "./ModalCreateUser";
+import "./ManageUser.scss"
+
 
 const ManageUser = (props) => {
   return (
