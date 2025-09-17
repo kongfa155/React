@@ -3,28 +3,54 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import img2 from "../../../assets/img-2.jpg";
 import { FcPlus } from "react-icons/fc";
-const Example = () => {
-  const [show, setShow] = useState(false);
+import axios from 'axios';
+const Example = (props) => {
+  const { show, setShow } = props;
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    setImage("");
+    setPreviewImage("");
+    setRole("USER")
+};
   const handleShow = () => setShow(true);
-  const [email, setEmail] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [image, setImage] = useState();
-  const [role, setRole] = useState("USER")
-  const handleUploadImage = (event)=>{
-    if(event.target && event.target.files && event.target.files[0]){
-    setPreviewImage(URL.createObjectURL(event.target.files[0]));
-        setImage(event.target.files[0]);
-    }
-  }
+  const [role, setRole] = useState("USER");
   const [previewImage, setPreviewImage] = useState();
+  const handleUploadImage = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      setPreviewImage(URL.createObjectURL(event.target.files[0]));
+      setImage(event.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async () => {
+    //validate
+
+    //data
+    
+    const data = new FormData();
+    data.append("email", email);
+    data.append("password", password);
+    data.append("username", username);
+    data.append("role", role);
+    data.append("userImage", image);
+
+    let res = await axios.post("http://localhost:8081/api/v1/participant", data);
+    console.log(">>> check res: ", res);
+  };
+  
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      {/* <Button variant="primary" onClick={handleShow}>
         Launch demo modal
-      </Button>
+      </Button> */}
 
       <Modal
         show={show}
@@ -39,47 +65,41 @@ const Example = () => {
         <Modal.Body>
           <form className="row g-3">
             <div className="col-md-6">
-              <label
-                className="form-label"
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                id="inputEmail4"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-              >
-                Email
-              </label>
-              <input type="email" className="form-control" id="inputEmail4" />
+              />
             </div>
             <div className="col-md-6">
-              <label
-                className="form-label"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              >
-                Password
-              </label>
+              <label className="form-label">Password</label>
               <input
                 type="password"
                 className="form-control"
                 id="inputPassword4"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div className="col-md-6">
-              <label
-                className="form-label"
+              <label className="form-label">Username</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputCity"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
-              >
-                Username
-              </label>
-              <input type="text" className="form-control" id="inputCity" />
+              />
             </div>
             <div className="col-md-4">
-              <label
-                className="form-label"
+              <label className="form-label">Role</label>
+              <select
+                className="form-select"
                 onChange={(event) => setRole(event.target.value)}
               >
-                Role
-              </label>
-              <select className="form-select">
                 <option selected default value="USER">
                   USER
                 </option>
@@ -100,7 +120,11 @@ const Example = () => {
             </div>
 
             <div className="col-md-12 img-preview">
-              {previewImage ? <img src={previewImage} /> : <span> Preview Img</span>}
+              {previewImage ? (
+                <img src={previewImage} />
+              ) : (
+                <span> Preview Img</span>
+              )}
             </div>
           </form>
         </Modal.Body>
@@ -108,7 +132,7 @@ const Example = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={() => handleSubmit()}>
             Save
           </Button>
         </Modal.Footer>
