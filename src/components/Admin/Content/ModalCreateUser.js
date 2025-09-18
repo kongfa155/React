@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import img2 from "../../../assets/img-2.jpg";
 import { FcPlus } from "react-icons/fc";
 import axios from 'axios';
+import { toast } from "react-toastify";
 const Example = (props) => {
   const { show, setShow } = props;
 
@@ -15,6 +16,14 @@ const Example = (props) => {
     setImage("");
     setPreviewImage("");
     setRole("USER")
+};
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
 };
   const handleShow = () => setShow(true);
   const [email, setEmail] = useState("");
@@ -32,7 +41,14 @@ const Example = (props) => {
 
   const handleSubmit = async () => {
     //validate
-
+    if(!validateEmail(email)){
+        toast.error("Invalid email");
+        return ;
+    }
+    if(!password){
+        toast.error("Invalid password");
+        return;
+    }
     //data
     
     const data = new FormData();
@@ -43,7 +59,13 @@ const Example = (props) => {
     data.append("userImage", image);
 
     let res = await axios.post("http://localhost:8081/api/v1/participant", data);
-    console.log(">>> check res: ", res);
+    if(res.data && res.data.EC === 0){
+        toast.success("Tao tai khoan thanh cong")
+        handleClose();
+    }
+    if(res.data && res.data.EC !== 0){
+        toast.error("Loi server")
+    }
   };
   
   return (
