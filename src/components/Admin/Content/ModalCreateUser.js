@@ -3,11 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import img2 from "../../../assets/img-2.jpg";
 import { FcPlus } from "react-icons/fc";
-import axios from 'axios';
 import { toast } from "react-toastify";
-const Example = (props) => {
-  const { show, setShow } = props;
+import { postCreateNewUser } from "../../../services/apiServices";
 
+const Example = (props) => {
+    //Nhận hàm từ cha để tiến hành set up ẩn hiện
+  const { show, setShow } = props;
+    //Ấn nút x hoặc close thì reset dữ liệu
   const handleClose = () => {
     setShow(false);
     setEmail("");
@@ -15,16 +17,18 @@ const Example = (props) => {
     setUsername("");
     setImage("");
     setPreviewImage("");
-    setRole("USER")
-};
+    setRole("USER");
+  };
+  //Regex Email
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
-const validateEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
+  //Thông tin điền trong form thông tin
   const handleShow = () => setShow(true);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -32,42 +36,36 @@ const validateEmail = (email) => {
   const [image, setImage] = useState();
   const [role, setRole] = useState("USER");
   const [previewImage, setPreviewImage] = useState();
+
+  //Hàm xử lý việc up ảnh và hiển thị
   const handleUploadImage = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
       setPreviewImage(URL.createObjectURL(event.target.files[0]));
       setImage(event.target.files[0]);
     }
   };
-
+  //Xử lý tải dữ liệu lên backend
   const handleSubmit = async () => {
     //validate
-    if(!validateEmail(email)){
-        toast.error("Invalid email");
-        return ;
+    if (!validateEmail(email)) {
+      toast.error("Invalid email");
+      return;
     }
-    if(!password){
-        toast.error("Invalid password");
-        return;
+    if (!password) {
+      toast.error("Invalid password");
+      return;
     }
     //data
-    
-    const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    data.append("username", username);
-    data.append("role", role);
-    data.append("userImage", image);
-
-    let res = await axios.post("http://localhost:8081/api/v1/participant", data);
-    if(res.data && res.data.EC === 0){
-        toast.success("Tao tai khoan thanh cong")
-        handleClose();
+    let data = await postCreateNewUser(email, password, username, role, image);
+    if (data && data.EC === 0) {
+      toast.success(data.EM);
+      handleClose();
     }
-    if(res.data && res.data.EC !== 0){
-        toast.error("Loi server")
+    if (data && data.EC !== 0) {
+      toast.error(data.EM);
     }
   };
-  
+
   return (
     <>
       {/* <Button variant="primary" onClick={handleShow}>

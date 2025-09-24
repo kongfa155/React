@@ -4,6 +4,7 @@ import { FcPlus } from "react-icons/fc";
 import { useState } from "react";
 
 const ManageUser = (props) => {
+    //Quản lý việc ẩn hiện form điền người dùng
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   return (
     <div className="manage-user-container">
@@ -21,6 +22,7 @@ const ManageUser = (props) => {
         </div>
         <div className="table-users-container">
           Table users
+          {/* Truyền cho modal quyền ẩn hiện */}
           <Example
             show={showModalCreateUser}
             setShow={setShowModalCreateUser}
