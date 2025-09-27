@@ -2,9 +2,10 @@ import Example from "./ModalCreateUser";
 import "./ManageUser.scss";
 import { FcPlus } from "react-icons/fc";
 import { useState } from "react";
+import TableUser from "./TableUser";
 
 const ManageUser = (props) => {
-    //Quản lý việc ẩn hiện form điền người dùng
+  //Quản lý việc ẩn hiện form điền người dùng
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   return (
     <div className="manage-user-container">
@@ -21,13 +22,10 @@ const ManageUser = (props) => {
           </button>
         </div>
         <div className="table-users-container">
-          Table users
+          <TableUser />
           {/* Truyền cho modal quyền ẩn hiện */}
-          <Example
-            show={showModalCreateUser}
-            setShow={setShowModalCreateUser}
-          />
         </div>
+        <Example show={showModalCreateUser} setShow={setShowModalCreateUser} />
       </div>
     </div>
   );
