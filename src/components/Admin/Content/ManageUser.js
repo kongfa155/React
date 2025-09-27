@@ -1,12 +1,24 @@
 import Example from "./ModalCreateUser";
 import "./ManageUser.scss";
 import { FcPlus } from "react-icons/fc";
-import { useState } from "react";
 import TableUser from "./TableUser";
+import { useEffect, useState } from "react";
+import { getAllUser } from "../../../services/apiServices.js";
 
 const ManageUser = (props) => {
   //Quản lý việc ẩn hiện form điền người dùng
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
+
+    const [listUser, setListUser] = useState([]);
+  const fetchListUser = async () => {
+    let res = await getAllUser();
+    if (res.EC === 0) {
+      setListUser(res.DT);
+    }
+  };
+  useEffect(() => {
+    fetchListUser();
+  }, []);
   return (
     <div className="manage-user-container">
       <div className="title">Manage User</div>
@@ -22,10 +34,11 @@ const ManageUser = (props) => {
           </button>
         </div>
         <div className="table-users-container">
-          <TableUser />
+          <TableUser listUser={listUser}/>
           {/* Truyền cho modal quyền ẩn hiện */}
         </div>
-        <Example show={showModalCreateUser} setShow={setShowModalCreateUser} />
+        <Example show={showModalCreateUser} setShow={setShowModalCreateUser} 
+        fetchListUser = {fetchListUser}/>
       </div>
     </div>
   );

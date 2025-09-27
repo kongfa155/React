@@ -8,7 +8,7 @@ import { postCreateNewUser } from "../../../services/apiServices";
 
 const Example = (props) => {
     //Nhận hàm từ cha để tiến hành set up ẩn hiện
-  const { show, setShow } = props;
+  const { show, setShow, fetchListUser } = props;
     //Ấn nút x hoặc close thì reset dữ liệu
   const handleClose = () => {
     setShow(false);
@@ -60,6 +60,7 @@ const Example = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
+      await fetchListUser();
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
