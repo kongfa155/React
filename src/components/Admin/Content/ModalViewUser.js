@@ -4,29 +4,18 @@ import Modal from "react-bootstrap/Modal";
 import img2 from "../../../assets/img-2.jpg";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
-import { putUpdateUser } from "../../../services/apiServices";
+
 import _ from "lodash";
 
-const ModalUpdateUser = (props) => {
+const ModalViewUser = (props) => {
   //Nhận hàm từ cha để tiến hành set up ẩn hiện
-  const { show, setShow, fetchListUser, dataUser, resetUpdateData} = props;
+  const { show, setShow, dataUser } = props;
   //Ấn nút x hoặc close thì reset dữ liệu
-  const handleClose = () => {
-    setShow(false);
-    setEmail("");
-    setPassword("");
-    setUsername("");
-    setImage("");
-    setPreviewImage("");
-    setRole("USER");
-    resetUpdateData();
-  };
-
+    const handleClose = () => setShow(false);
   //Thông tin điền trong form thông tin
   const handleShow = () => setShow(true);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [image, setImage] = useState();
   const [role, setRole] = useState("USER");
   const [previewImage, setPreviewImage] = useState();
@@ -40,26 +29,6 @@ const ModalUpdateUser = (props) => {
       }
     }
   }, [dataUser]);
-  //Hàm xử lý việc up ảnh và hiển thị
-  const handleUploadImage = (event) => {
-    if (event.target && event.target.files && event.target.files[0]) {
-      setPreviewImage(URL.createObjectURL(event.target.files[0]));
-      setImage(event.target.files[0]);
-    }
-  };
-  //Xử lý tải dữ liệu lên backend
-  const handleSubmit = async () => {
-    let data = await putUpdateUser(dataUser.id, username, role, image);
-    if (data && data.EC === 0) {
-      toast.success(data.EM);
-      handleClose();
-      
-      await fetchListUser();
-    }
-    if (data && data.EC !== 0) {
-      toast.error(data.EM);
-    }
-  };
 
   return (
     <>
@@ -69,13 +38,13 @@ const ModalUpdateUser = (props) => {
 
       <Modal
         show={show}
-        onHide={handleClose}
         size="xl"
         backdrop="static"
         className="modal-add-user"
+        onHide={handleClose}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update User</Modal.Title>
+          <Modal.Title>Info</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -87,18 +56,6 @@ const ModalUpdateUser = (props) => {
                 id="inputEmail4"
                 value={email}
                 disabled
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="inputPassword4"
-                value={password}
-                disabled
-                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div className="col-md-6">
@@ -108,32 +65,17 @@ const ModalUpdateUser = (props) => {
                 className="form-control"
                 id="inputCity"
                 value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                disabled
               />
             </div>
             <div className="col-md-4">
               <label className="form-label">Role</label>
-              <select
-                className="form-select"
-                onChange={(event) => setRole(event.target.value)}
-              >
+              <select className="form-select" disabled>
                 <option selected default value="USER">
                   USER
                 </option>
                 <option value="ADMIN">ADMIN</option>
               </select>
-            </div>
-            <div className="col-md-12">
-              <label className="form-label label-upload" htmlFor="labelUpload">
-                <FcPlus />
-                Upload File Image
-              </label>
-              <input
-                type="file"
-                hidden
-                id="labelUpload"
-                onChange={(event) => handleUploadImage(event)}
-              />
             </div>
 
             <div className="col-md-12 img-preview">
@@ -149,13 +91,10 @@ const ModalUpdateUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleSubmit()}>
-            Save
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 };
 
-export default ModalUpdateUser;
+export default ModalViewUser;
