@@ -4,12 +4,12 @@ import Modal from "react-bootstrap/Modal";
 import img2 from "../../../assets/img-2.jpg";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
-import { postCreateNewUser } from "../../../services/apiServices";
+import { putUpdateUser } from "../../../services/apiServices";
 import _ from "lodash";
 
 const ModalUpdateUser = (props) => {
   //Nhận hàm từ cha để tiến hành set up ẩn hiện
-  const { show, setShow, fetchListUser, dataUpdate } = props;
+  const { show, setShow, fetchListUser, dataUpdate, resetUpdateData} = props;
   //Ấn nút x hoặc close thì reset dữ liệu
   const handleClose = () => {
     setShow(false);
@@ -19,14 +19,7 @@ const ModalUpdateUser = (props) => {
     setImage("");
     setPreviewImage("");
     setRole("USER");
-  };
-  //Regex Email
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
+    resetUpdateData();
   };
 
   //Thông tin điền trong form thông tin
@@ -42,8 +35,8 @@ const ModalUpdateUser = (props) => {
       setEmail(dataUpdate.email);
       setUsername(dataUpdate.username);
       setRole(dataUpdate.role);
-      if(dataUpdate.image){
-      setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
+      if (dataUpdate.image) {
+        setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`);
       }
     }
   }, [dataUpdate]);
@@ -56,20 +49,11 @@ const ModalUpdateUser = (props) => {
   };
   //Xử lý tải dữ liệu lên backend
   const handleSubmit = async () => {
-    //validate
-    if (!validateEmail(email)) {
-      toast.error("Invalid email");
-      return;
-    }
-    if (!password) {
-      toast.error("Invalid password");
-      return;
-    }
-    //data
-    let data = await postCreateNewUser(email, password, username, role, image);
+    let data = await putUpdateUser(dataUpdate.id, username, role, image);
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
+      
       await fetchListUser();
     }
     if (data && data.EC !== 0) {
