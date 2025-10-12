@@ -9,7 +9,7 @@ import _ from "lodash";
 
 const ModalUpdateUser = (props) => {
   //Nhận hàm từ cha để tiến hành set up ẩn hiện
-  const { show, setShow, fetchListUser, dataUser, resetUpdateData} = props;
+  const { show, setShow, dataUser, resetUpdateData} = props;
   //Ấn nút x hoặc close thì reset dữ liệu
   const handleClose = () => {
     setShow(false);
@@ -54,7 +54,7 @@ const ModalUpdateUser = (props) => {
       toast.success(data.EM);
       handleClose();
       
-      await fetchListUser();
+      await props.fetchListUserWithPaginate(props.currentPage);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);

@@ -3,12 +3,19 @@ import "./ManageUser.scss";
 import { FcPlus } from "react-icons/fc";
 import TableUser from "./TableUser";
 import { useEffect, useState } from "react";
-import { getAllUser } from "../../../services/apiServices.js";
+import {
+  getAllUser,
+  getListUserWithPaginate,
+} from "../../../services/apiServices.js";
 import ModalUpdateUser from "./ModalUpdateUser.js";
 import ModalViewUser from "./ModalViewUser.js";
 import ModalDeleteUser from "./ModalDeleteUser.js";
+import TableUserPaginate from "./TableUserPaginate.js";
 
 const ManageUser = (props) => {
+  const [pageCount, setPageCount] = useState(0);
+  const LIMIT_USER = 6;
+  const [currentPage, setCurrentPage] = useState(1);
   //Quản lý việc ẩn hiện form điền người dùng
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
@@ -17,14 +24,24 @@ const ManageUser = (props) => {
   const [showModalViewUser, setShowModalViewUser] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [dataUser, setdataUser] = useState([]);
-  const fetchListUser = async () => {
-    let res = await getAllUser();
+
+  //Dùng để reset danh sách khi cập nhật, thêm, xóa
+  //   const fetchListUser = async () => {
+  //     let res = await getAllUser();
+  //     if (res.EC === 0) {
+  //       setListUser(res.DT);
+  //     }
+  //   };
+
+  const fetchListUserWithPaginate = async (page) => {
+    let res = await getListUserWithPaginate(page, LIMIT_USER);
     if (res.EC === 0) {
-      setListUser(res.DT);
+      setListUser(res.DT.users);
+      setPageCount(res.DT.totalPages);
     }
   };
   useEffect(() => {
-    fetchListUser();
+    fetchListUserWithPaginate(1);
   }, []);
 
   const handleClickBtnUpdate = (user) => {
@@ -57,25 +74,39 @@ const ManageUser = (props) => {
           </button>
         </div>
         <div className="table-users-container">
-          <TableUser
+          {/* <TableUser
             listUser={listUser}
             handleClickBtnUpdate={handleClickBtnUpdate}
             handleClickBtnView={handleClickBtnView}
             handleClickBtnDelete={handleClickBtnDelete}
+          /> */}
+          <TableUserPaginate
+            listUser={listUser}
+            handleClickBtnUpdate={handleClickBtnUpdate}
+            handleClickBtnView={handleClickBtnView}
+            handleClickBtnDelete={handleClickBtnDelete}
+            pageCount={pageCount}
+            fetchListUserWithPaginate={fetchListUserWithPaginate}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
           {/* Truyền cho modal quyền ẩn hiện */}
         </div>
         <ModalCreateUser
           show={showModalCreateUser}
           setShow={setShowModalCreateUser}
-          fetchListUser={fetchListUser}
+          fetchListUserWithPaginate={fetchListUserWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
         <ModalUpdateUser
           show={showModalUpdateUser}
           setShow={setShowModalUpdateUser}
           dataUser={dataUser}
-          fetchListUser={fetchListUser}
           resetUpdateData={resetUpdateData}
+          fetchListUserWithPaginate={fetchListUserWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
         <ModalViewUser
           show={showModalViewUser}
@@ -86,7 +117,9 @@ const ManageUser = (props) => {
           show={showModalDeleteUser}
           setShow={setShowModalDeleteUser}
           dataUser={dataUser}
-          fetchListUser={fetchListUser}
+          fetchListUserWithPaginate={fetchListUserWithPaginate}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>

@@ -8,7 +8,7 @@ import { postCreateNewUser } from "../../../services/apiServices";
 
 const ModalCreateUser = (props) => {
     //Nhận hàm từ cha để tiến hành set up ẩn hiện
-  const { show, setShow, fetchListUser } = props;
+  const { show, setShow } = props;
     //Ấn nút x hoặc close thì reset dữ liệu
   const handleClose = () => {
     setShow(false);
@@ -60,7 +60,8 @@ const ModalCreateUser = (props) => {
     if (data && data.EC === 0) {
       toast.success(data.EM);
       handleClose();
-      await fetchListUser();
+      props.setCurrentPage(1);
+      await props.fetchListUserWithPaginate(1);
     }
     if (data && data.EC !== 0) {
       toast.error(data.EM);
