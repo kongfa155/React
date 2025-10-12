@@ -78,6 +78,7 @@ const TableUserPaginate = (props) => {
           pageRangeDisplayed={3}
           marginPagesDisplayed={2}
           pageCount={pageCount}
+        //   Css
           previousLabel="< previous"
           pageClassName="page-item"
           pageLinkClassName="page-link"
