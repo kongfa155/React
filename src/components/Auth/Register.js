@@ -3,12 +3,14 @@ import "./Register.scss";
 import { useNavigate } from "react-router-dom";
 import { postRegister } from "../../services/apiServices";
 import { toast } from "react-toastify";
+
 const Register = (props) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState("text");
   const navigate = useNavigate();
+
     const handleShowHidePassword = ()=>{
         document.getElementById('password-reg').type = showPassword;
         if(showPassword === 'text'){

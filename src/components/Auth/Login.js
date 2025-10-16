@@ -3,20 +3,28 @@ import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import {postLogin} from '../../services/apiServices'
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { doLogin } from "../../redux/action/userAction";
+import { ImSpinner10 } from 'react-icons/im';
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
   const handleLogin = async () => {
 
-
+    setIsLoading(true);
     //submit
     let res = await postLogin(email, password);
     console.log("check res, " ,res);
     if(res && res.EC ===0){
+        dispatch(doLogin(res))
+        setIsLoading(false);
         toast.success(res.EM);
+        navigate('/');
     } else {
+        setIsLoading(false);
         toast.error(res.EM);
     }
   };
@@ -24,8 +32,14 @@ const Login = (props) => {
     <div className="login-container">
       <div className="header">
         <span>Don't have an account yet?</span>
-        <button className="btn-sign-up"
-        onClick={()=> {navigate("/register")}}>Sign up</button>
+        <button
+          className="btn-sign-up"
+          onClick={() => {
+            navigate("/register");
+          }}
+        >
+          Sign up
+        </button>
       </div>
       <div className="title col-4 mx-auto">Login</div>
       <div className="welcome col-4 mx-auto">Hello, who's this</div>
@@ -56,11 +70,20 @@ const Login = (props) => {
         <span className="forgot-password">Forgot password</span>
         <div>
           <button className="btn-submit" onClick={() => handleLogin()}>
-            Login to Web
+            {isLoading === true ? <ImSpinner10 className="loaderIcon"/>: ''}
+            <span>Login to Web</span>
           </button>
         </div>
         <div className="text-center">
-          <span className="back" onClick={()=> {navigate("/")}}> &#60;&#60;Go to Homepage</span>
+          <span
+            className="back"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            {" "}
+            &#60;&#60;Go to Homepage
+          </span>
         </div>
       </div>
     </div>
