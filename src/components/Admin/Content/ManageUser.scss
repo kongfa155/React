@@ -48,3 +48,18 @@
     }
 }
 
+.img-preview {
+    transition: 0.25s ease;
+}
+
+.img-preview:hover {
+    background-color: #f8f9fa;
+}
+
+.label-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #007bff;
+    cursor: pointer;
+}

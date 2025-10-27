@@ -1,0 +1,33 @@
+.cropper-container {
+  position: relative;
+  width: 100%;
+  max-width: 380px; /* vùng hiển thị to hơn preview */
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.cropper-wrapper {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #222;
+}
+
+.reactEasyCrop_CropArea {
+  border-radius: 50% !important;
+}
+
+.cropper-controls {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.cropper-controls input[type="range"] {
+  width: 80%;
+}
